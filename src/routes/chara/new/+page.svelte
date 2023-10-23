@@ -1,13 +1,12 @@
 <script lang="ts">
-  import Editor from '~/lib/Editor.svelte';
+  import Editor from "$lib/components/editor/Editor.svelte";
   let content = '';
 </script>
 
 <section>
-  <form method="post">
+  <form>
     <input type="text" name="name" id="name" />
-    <Editor />
-
+    <Editor json={{}} />
     <button>Add Character</button>
   </form>
 </section>

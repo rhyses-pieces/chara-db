@@ -14,7 +14,6 @@ export const actions = {
       .from('characters')
       .insert({ 
         uuid,
-        created_at: new Date(),
         creator,
         name,
         content

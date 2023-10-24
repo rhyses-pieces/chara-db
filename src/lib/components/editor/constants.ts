@@ -44,6 +44,13 @@ let isActive = (name: string, attrs = {}) => {
 
 const headingItems = [
   {
+    name: 'paragraph',
+    label: 'Paragraph',
+    icon: Pilcrow,
+    command: setParagraph,
+    active: isActive('paragraph'),
+  },
+  {
     name: 'heading-1',
     label: 'Heading 1',
     icon: Heading1,
@@ -63,13 +70,6 @@ const headingItems = [
     icon: Heading3,
     command: toggleHeading(3),
     active: isActive('heading', { level: 3 }),
-  },
-  {
-    name: 'paragraph',
-    label: 'Paragraph',
-    icon: Pilcrow,
-    command: setParagraph,
-    active: isActive('paragraph'),
   },
 ];
 
@@ -124,12 +124,14 @@ const listItems = [
     label: 'Indent List Item',
     icon: Indent,
     command: indentList,
+    active: (editor: Editor) => !editor.can().sinkListItem('listItem'),
   },
   {
     name: 'outdent-list',
     label: 'Outdent List Item',
     icon: Outdent,
     command: outdentList,
+    active: (editor: Editor) => !editor.can().liftListItem('listItem'),
   },
 ];
 
@@ -146,13 +148,14 @@ const blockItems = [
     label: 'Code Block',
     icon: Terminal,
     command: toggleCodeBlock,
-    active: isActive('codeblock'),
+    active: isActive('codeBlock'),
   },
   {
     name: 'hr',
     label: 'Horizontal Rule',
     icon: Minus,
     command: setHr,
+    active: () => false,
   }
 ];
 
@@ -162,18 +165,21 @@ const controlItems = [
     label: 'Undo',
     icon: Undo,
     command: undo,
+    disabled: (editor: Editor) => !editor.can().undo(),
   },
   {
     name: 'redo',
     label: 'Redo',
     icon: Redo,
     command: redo,
+    disabled: (editor: Editor) => !editor.can().redo(),
   },
   {
     name: 'remove-format',
     label: 'Remove Formatting',
     icon: RemoveFormatting,
     command: removeFormat,
+    disabled: () => false,
   }
 ];
 

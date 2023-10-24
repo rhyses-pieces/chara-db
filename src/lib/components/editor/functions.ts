@@ -23,8 +23,8 @@ const toggleCodeBlock = (editor: Editor) => chainer(editor).toggleCodeBlock().ru
 const setParagraph = (editor: Editor) => chainer(editor).setParagraph().run();
 const setHr = (editor: Editor) => chainer(editor).setHorizontalRule().run();
 
-const undo = (editor: Editor) => chainer(editor).undo();
-const redo = (editor: Editor) => chainer(editor).redo();
+const undo = (editor: Editor) => chainer(editor).undo().run();
+const redo = (editor: Editor) => chainer(editor).redo().run();
 const removeFormat = (editor: Editor) => chainer(editor).clearNodes().unsetAllMarks().run();
 
 export {

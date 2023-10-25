@@ -25,8 +25,11 @@
   "dependencies": {
     "@supabase/auth-helpers-sveltekit": "^0.10.3",
     "@supabase/supabase-js": "^2.38.1",
+    "@tinymce/tinymce-svelte": "^1.0.1",
+    "@tiptap/html": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
     "lucide-svelte": "^0.288.0",
-    "svelte-tiptap": "^1.1.2"
+    "svelte-tiptap": "^1.1.2",
+    "tinymce": "^6.7.1"
   }
 }

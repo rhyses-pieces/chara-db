@@ -5,10 +5,10 @@ export const actions = {
     const session = await getSession();
     const form = await request.formData();
 
-    const uuid = crypto.randomUUID();
-    const creator = session?.user.id;
-    const name = form.get('name');
-    const content = form.get('content');
+    const uuid = crypto.randomUUID() as string;
+    const creator = session?.user.id!;
+    const name = form.get('name') as string;
+    const content = JSON.parse(form.get('content') as string);
     
     const { error: createCharaError, data: newChara } = await supabase
       .from('characters')

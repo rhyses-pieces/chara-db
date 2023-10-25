@@ -1,4 +1,3 @@
-import { invalidate } from "$app/navigation";
 import { PUBLIC_DB_URL, PUBLIC_DB_ANON_KEY } from "$env/static/public";
 import { createSupabaseLoadClient } from "@supabase/auth-helpers-sveltekit";
 import type { LayoutLoad } from "./$types";

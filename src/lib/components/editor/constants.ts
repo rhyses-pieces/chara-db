@@ -111,6 +111,7 @@ const listItems = [
     icon: List,
     command: toggleBullet,
     active: isActive('bullet'),
+    disabled: () => false,
   },
   {
     name: 'ordered',
@@ -118,20 +119,23 @@ const listItems = [
     icon: ListOrdered,
     command: toggleOrder,
     active: isActive('ordered'),
+    disabled: () => false,
   },
   {
     name: 'indent-list',
     label: 'Indent List Item',
     icon: Indent,
     command: indentList,
-    active: (editor: Editor) => !editor.can().sinkListItem('listItem'),
+    active: () => false,
+    disabled: (editor: Editor) => !editor.can().sinkListItem('listItem'),
   },
   {
     name: 'outdent-list',
     label: 'Outdent List Item',
     icon: Outdent,
     command: outdentList,
-    active: (editor: Editor) => !editor.can().liftListItem('listItem'),
+    active: () => false,
+    disabled: (editor: Editor) => !editor.can().liftListItem('listItem'),
   },
 ];
 

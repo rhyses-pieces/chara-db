@@ -1,14 +1,17 @@
 import { error, type Actions, fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
+export const load: PageServerLoad = async ({ params, locals: { supabase, getSession } }) => {
+  const session = await getSession();
+
+  const { data: { user } } = await supabase.auth.getUser();
   const { data: chara } = await supabase
    .from('characters')
    .select()
    .eq('id', params.id)
    .single();
 
-  return { chara };
+  return { chara, user, session };
 }
 
 export const actions = {

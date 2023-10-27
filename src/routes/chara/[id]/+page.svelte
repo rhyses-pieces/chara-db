@@ -1,22 +1,27 @@
 <script lang="ts">
-  let updateChara = false;
+  import WyisygEditor from "$lib/components/editor/WYISYGEditor.svelte";
 
+  let updateChara = false;
   export let data;
-  export let form;
+  
+  $: ({ user, chara } = data);
+  $: json = JSON.parse(chara.data);
 </script>
 
 <section>
-  <h1>character name here</h1>
-  {JSON.stringify(data.chara)}
+  <h1>{chara.name}</h1>
+  {JSON.stringify(chara)}
 
-  {#if updateChara}
-    <form action="?/update" method="post">
-      <input type="text" name="content" id="content" value={form?.updateChara ?? ''}>
-      <button>Update</button>
-    </form>
-  {:else}
-    <button on:click={() => updateChara = !updateChara}>Edit</button>
+  {#if chara.creator_id == user?.id}
+    {#if updateChara}
+      <form action="?/update" method="post">
+        <WyisygEditor bind:json />
+        <button>Update</button>
+      </form>
+    {:else}
+      <button on:click={() => updateChara = !updateChara}>Edit</button>
+    {/if}
   {/if}
-
+  
   <!-- if delete, make confirm modal -->
 </section>

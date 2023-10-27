@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { writable, type Readable } from 'svelte/store';
   import { Editor, createEditor, EditorContent } from 'svelte-tiptap';
-  import type { JSONContent } from '@tiptap/core';
+  import type { Content, JSONContent } from '@tiptap/core';
   import StarterKit from '@tiptap/starter-kit';
   import { createDialog, createSelect, createToolbar, melt } from '@melt-ui/svelte';
   import {
@@ -15,7 +15,7 @@
   import { Check, ChevronDown, X } from 'lucide-svelte';
 
   let editor: Readable<Editor>;
-  export let json: JSONContent;
+  export let html: string;
 
   onMount(() => {
     editor = createEditor({
@@ -23,12 +23,12 @@
         StarterKit,
       ],
       onCreate: ({ editor }) => {
-        if (json.type !== undefined) {
-          editor.commands.setContent(json);
+        if (html !== undefined) {
+          editor.commands.setContent(html);
         }
       },
       onUpdate: () => {
-        json = $editor.getJSON();
+        html = $editor.getHTML();
       }
     });
   });
@@ -95,7 +95,12 @@
 <nav use:melt={$root}>
   <div use:melt={$textStyleGroup}>
     <div use:melt={$textStyle('heading')}>
-      <button use:melt={$trigger} aria-label="Heading">
+      <button 
+        type="button" 
+        use:melt={$trigger} 
+        aria-label="Heading"
+        class="btn"
+      >
         {activeHeading($editor) || 'Select heading'}
         <ChevronDown />
       </button>

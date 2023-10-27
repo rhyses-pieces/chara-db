@@ -1,4 +1,4 @@
-import { redirect, type Actions, fail } from "@sveltejs/kit";
+import { redirect, type Actions, fail, error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ locals: { supabase, getSession } }) => {
@@ -20,21 +20,17 @@ export const actions = {
     const form = await request.formData();
 
     const username = form.get('username') as string;
+    const email = form.get('email') as string;
     
-    const { error } = await supabase.from('users').upsert({
-      username,
-      updated_at: new Date(),
+    const { data: { user }, error } = await supabase.auth.updateUser({
+      email,
+      data: {
+        username: username,
+      },
     });
 
-    if (error) {
-      return fail(500, {
-        username,
-      });
-    }
-
-    return {
-      username,
-    };
+    if (error) return fail(500, { user });
+    return { user };
   },
 
   logout: async ({ locals: { supabase, getSession } }) => {

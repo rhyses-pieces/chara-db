@@ -1,4 +1,5 @@
-import { error, type Actions, fail } from "@sveltejs/kit";
+import { type Actions, fail, redirect } from "@sveltejs/kit";
+import DOMPurify from 'isomorphic-dompurify';
 
 export const actions = {
   default: async ({ request, locals: { supabase, getSession } }) => {
@@ -6,25 +7,31 @@ export const actions = {
     const form = await request.formData();
 
     const uuid = crypto.randomUUID() as string;
-    const creator = session?.user.id!;
+    const creator = session?.user.id;
     const name = form.get('name') as string;
-    const content = JSON.parse(form.get('content') as string);
+    const content = form.get('content') as string;
+
+    const sanitizeConfig = {
+      ALLOWED_ATTR: ['style', 'class'],
+    };
+    const sanitize = DOMPurify.sanitize(content, sanitizeConfig);
     
-    const { error: createCharaError, data: newChara } = await supabase
+    const { error } = await supabase
       .from('characters')
       .insert({ 
-        uuid,
-        creator,
+        id: uuid,
+        creator_id: creator,
         name,
-        content
+        data: sanitize,
       });
     
-    if (createCharaError) {
+    if (error) {
+      console.error(error);
       return fail(500, {
-        supabaseErrorMessage: createCharaError.message,
+        supabaseErrorMessage: error.message,
       });
     }
 
-    return { newChara };
+    throw redirect(301, `/chara/${uuid}`);
   }
 } satisfies Actions;

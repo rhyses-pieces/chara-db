@@ -17,7 +17,7 @@ export const actions = {
         data: {
           username: username,
         },
-        emailRedirectTo: `${url.origin}/auth/callback`,
+        emailRedirectTo: `${url.origin}/api/auth/callback`,
       },
     });
 

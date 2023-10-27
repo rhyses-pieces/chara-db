@@ -1,26 +1,24 @@
 <script lang="ts">
   import WyisygEditor from "$lib/components/editor/WYISYGEditor.svelte";
-  import { enableCode } from "$lib/store";
-  import type { Snapshot } from "./$types";
-  import type { JSONContent } from "@tiptap/core";
+  import CodeEditor from "$lib/components/editor/CodeEditor.svelte";
+  import { enableCodeKey } from "$lib/store-keys"; 
+  import { getContext } from "svelte";
+  import type { Writable } from "svelte/store";
 
-  let json = {};
+  const enableCode = getContext<Writable<string>>(enableCodeKey);
 
-  export const snapshot: Snapshot<JSONContent> = {
-    capture: () => json,
-    restore: (data) => (json = data),
-  }
+  let value = '';
 </script>
 
 <section>
-  <form>
+  <form method="post">
     <input type="text" name="name" id="name" />
-    {#if $enableCode}
-      this should be where the code editor goes
+    {#if $enableCode === 'true'}
+      <CodeEditor value={value} />
     {:else}
-      <WyisygEditor bind:json />
-      <input type="hidden" name="content" id="content" value={JSON.stringify(json)} />
+      <WyisygEditor bind:html={value} />
+      <input type="hidden" name="content" id="content" value={value} />
     {/if}
-    <button>Add Character</button>
+    <button type="submit">Add Character</button>
   </form>
 </section>

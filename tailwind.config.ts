@@ -2,6 +2,7 @@ import { join } from 'path';
 import type { Config } from 'tailwindcss';
 import { skeleton } from '@skeletonlabs/tw-plugin';
 import { defaultCustom } from './custom-theme';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
   darkMode: 'class',
@@ -10,7 +11,12 @@ export default {
     join(require.resolve('@skeletonlabs/skeleton'))
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'mono': ["'Intel One Mono'", ...defaultTheme.fontFamily.mono],
+        'sans': ["Luciole", ...defaultTheme.fontFamily.sans],
+      }
+    },
   },
   plugins: [
     skeleton({

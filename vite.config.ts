@@ -10,10 +10,10 @@ export default defineConfig({
 	],
 	optimizeDeps: {
 		exclude: [
-			'node_modules/svelte-tiptap/*',
-			'node_modules/@tiptap/*',
+			'svelte-tiptap/*',
+			'@tiptap/*',
 			'codemirror',
-			'@codemirror/lang-html',
+			'@codemirror/lang-html'
 		],
 	}
 });

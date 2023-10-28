@@ -1,9 +1,12 @@
 <script lang="ts">
   export let data;
 
-  $: ({ characters } = data);
+  $: ({ characters, session } = data);
 </script>
 
+{#if session !== null}
+  <a href="/chara/new">Add new character</a>
+{/if}
 <article>
   <ul>
     {#if characters}

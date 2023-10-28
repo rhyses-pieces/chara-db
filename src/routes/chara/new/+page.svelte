@@ -12,9 +12,10 @@
 
 <section>
   <form method="post">
-    <input type="text" name="name" id="name" />
+    <input type="text" name="name" id="name" required />
     {#if $enableCode === 'true'}
       <CodeEditor value={value} />
+      <input type="hidden" name="content" id="content" value={value} />
     {:else}
       <WyisygEditor bind:html={value} />
       <input type="hidden" name="content" id="content" value={value} />

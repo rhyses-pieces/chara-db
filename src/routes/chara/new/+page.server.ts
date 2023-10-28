@@ -1,4 +1,4 @@
-import { type Actions, fail, redirect } from "@sveltejs/kit";
+import { type Actions, fail, redirect, error } from "@sveltejs/kit";
 import DOMPurify from 'isomorphic-dompurify';
 
 export const actions = {
@@ -11,12 +11,16 @@ export const actions = {
     const name = form.get('name') as string;
     const content = form.get('content') as string;
 
+    if (content.search('<script>')) {
+      return error(402, { message: `Can't use <script> tags!` });
+    }
+
     const sanitizeConfig = {
       ALLOWED_ATTR: ['style', 'class'],
     };
     const sanitize = DOMPurify.sanitize(content, sanitizeConfig);
     
-    const { error } = await supabase
+    const { error: supabaseError } = await supabase
       .from('characters')
       .insert({ 
         id: uuid,
@@ -25,10 +29,10 @@ export const actions = {
         data: sanitize,
       });
     
-    if (error) {
-      console.error(error);
+    if (supabaseError) {
+      console.error(supabaseError);
       return fail(500, {
-        supabaseErrorMessage: error.message,
+        message: supabaseError.message,
       });
     }
 

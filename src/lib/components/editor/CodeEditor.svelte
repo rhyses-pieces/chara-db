@@ -5,5 +5,27 @@
   export let value = '';
 </script>
 
-<CodeMirror bind:value lang={html({
-})} />
+<CodeMirror bind:value lang={html()} styles={{
+  "&": {
+    maxWidth: "100%",
+    height: "20rem",
+  },
+  ".cm-scroller": {
+    fontFamily: `"Intel One Mono", ui-monospace, monospace`,
+  },
+  ".cm-selectBackground": {
+    backgroundColor: "rgb(var(--color-primary-500) / 0.3)",
+  },
+  ".cm-activeLine": {
+    backgroundColor: "rgb(var(--color-primary-500) / 0.3)",
+  },
+  ".cm-tooltip": {
+    backgroundColor: "rgb(var(--color-surface-50))",
+  },
+}} />
+
+<style>
+  :global(html.dark .cm-tooltip) {
+    background-color: rgb(var(--color-surface-900));
+  }
+</style>

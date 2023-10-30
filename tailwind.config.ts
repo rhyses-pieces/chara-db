@@ -14,7 +14,7 @@ export default {
     extend: {
       fontFamily: {
         'mono': ["'Intel One Mono'", ...defaultTheme.fontFamily.mono],
-        'sans': ["Luciole", ...defaultTheme.fontFamily.sans],
+        // 'sans': ["Luciole", ...defaultTheme.fontFamily.sans],
       }
     },
   },

@@ -1,35 +1,31 @@
-import { error, type Actions, fail } from "@sveltejs/kit";
+import { type Actions, fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, locals: { supabase, getSession } }) => {
-  const session = await getSession();
+export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
+  const { data: chara, error: characterError } = await supabase
+    .from('characters')
+    .select(`*,
+      users ( username )
+    `)
+    .eq('id', params.id)
+    .single();
 
-  const { data: { user } } = await supabase.auth.getUser();
-  const { data: chara } = await supabase
-   .from('characters')
-   .select()
-   .eq('id', params.id)
-   .single();
+  if (characterError) return fail(404, { message: "Unable to find character!" });
 
-  return { chara, user, session };
+  return { chara };
 }
 
 export const actions = {
-  update: async ({ request, locals: { supabase } }) => {
+  update: async ({ params, request, locals: { supabase } }) => {
     const form = await request.formData();
-    const content = form.get('content');
+    const content = form.get('content') as string;
     
-    const { error: updateCharaError, data: updateChara } = await supabase
+    const { error: updateCharaError } = await supabase
       .from('characters')
-      .update({ content });
+      .update({ data: content })
+      .eq('id', params.id);
     
-    if (updateCharaError) {
-      return fail(500, {
-        supabaseErrorMessage: updateCharaError.message,
-      });
-    }
-
-    return { updateChara };
+    if (updateCharaError) return fail(500, { message: updateCharaError.message });
   },
   
   delete: async ({ request, locals: { supabase } }) => {
@@ -41,10 +37,6 @@ export const actions = {
       .delete()
       .eq('id', id);
     
-    if (deleteCharaError) {
-      return fail(500, {
-        supabaseErrorMessage: deleteCharaError.message,
-      });
-    }
+    if (deleteCharaError) return fail(500, { message: deleteCharaError.message, });
   }
 } satisfies Actions;

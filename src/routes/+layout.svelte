@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { invalidate } from "$app/navigation";
   import { enableCodeKey } from "$lib/store-keys";
-  import { localStorageStore, setInitialClassState, modeUserPrefers, modeCurrent } from '@skeletonlabs/skeleton';
+  import { Toast, Modal, localStorageStore, setInitialClassState, initializeStores, modeUserPrefers, modeCurrent, prefersReducedMotionStore } from '@skeletonlabs/skeleton';
   import { createSwitch, melt } from "@melt-ui/svelte";
   import { onMount, setContext } from "svelte";
   import { Moon, Sun } from "lucide-svelte";
@@ -24,6 +24,8 @@
     return () => subscription.unsubscribe();
   });
 
+  // initializeStores();
+  
   const {
     elements: { root, input },
     states: { checked },
@@ -43,6 +45,9 @@
   <title>Chara DB</title>
   {@html `<script>(${setInitialClassState.toString()})();</script>`}
 </svelte:head>
+
+<!-- <Toast transitions={!$prefersReducedMotionStore} position='t' />
+<Modal /> -->
 
 <nav class="fixed flex justify-center top-0 left-0 w-[100vw] z-10 bg-surface-50-900-token">
   <ul class="flex gap-2">

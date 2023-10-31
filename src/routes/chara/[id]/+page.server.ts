@@ -26,6 +26,8 @@ export const actions = {
       .eq('id', params.id);
     
     if (updateCharaError) return fail(500, { message: updateCharaError.message });
+
+    return { message: 'successfully updated!' }
   },
   
   delete: async ({ request, locals: { supabase } }) => {

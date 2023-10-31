@@ -3,7 +3,6 @@ import { createSupabaseServerClient } from "@supabase/auth-helpers-sveltekit";
 import { redirect, type Handle, error } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-  // @ts-expect-error - supabase is yelling about protected properties?
   event.locals.supabase = createSupabaseServerClient({
     supabaseUrl: PUBLIC_DB_URL,
     supabaseKey: PUBLIC_DB_ANON_KEY,

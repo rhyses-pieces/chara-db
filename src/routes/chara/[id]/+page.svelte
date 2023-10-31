@@ -2,9 +2,8 @@
   import WyisygEditor from "$lib/components/editor/WYISYGEditor.svelte";
   import CodeEditor from "$lib/components/editor/CodeEditor.svelte";
   import { enableCodeKey } from "$lib/store-keys"; 
-  import { getContext, onMount } from "svelte";
+  import { getContext } from "svelte";
   import type { Writable } from "svelte/store";
-  import type { User } from "@supabase/supabase-js";
   import { createDialog } from "@melt-ui/svelte";
 
   let updateChara = false;

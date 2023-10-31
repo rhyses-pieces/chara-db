@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import { writable, type Readable } from 'svelte/store';
   import { Editor, createEditor, EditorContent } from 'svelte-tiptap';
-  import type { Content, JSONContent } from '@tiptap/core';
   import StarterKit from '@tiptap/starter-kit';
   import { createDialog, createSelect, createToolbar, melt } from '@melt-ui/svelte';
   import {
@@ -92,24 +91,24 @@
 
 <div id="editor">
 {#if editor}
-<nav use:melt={$root}>
-  <div use:melt={$textStyleGroup}>
+<nav use:melt={$root} class="flex min-w-max items-center gap-3">
+  <div use:melt={$textStyleGroup} class="flex gap-3">
     <div use:melt={$textStyle('heading')}>
       <button 
         type="button" 
         use:melt={$trigger} 
         aria-label="Heading"
-        class="btn"
+        class="btn w-44 justify-between mr-3"
       >
         {activeHeading($editor) || 'Select heading'}
-        <ChevronDown />
+        <ChevronDown size={16} />
       </button>
       {#if $open}
-        <div class="menu" use:melt={$menu}>
+        <div use:melt={$menu} class="bg-surface-50-900-token z-10 flex flex-col overflow-y-auto">
           {#each headingItems as heading (heading.name)}
             <div 
               use:melt={$option({ value: heading, label: heading.label })}
-              class={heading.active($editor) ? 'is-active' : ''}
+              class="{heading.active($editor) ? 'is-active' : ''}"
               on:m-click={() => {
                 heading.command($editor);
                 $selected = { value: heading, label: heading.label };
@@ -129,7 +128,7 @@
     {#each textStyleItems as item (item.name)}
       <button
         use:melt={$textStyle(item.name)}
-        class={item.active($editor) ? 'is-active' : ''}
+        class="btn-icon {item.active($editor) ? 'is-active' : ''}"
         aria-label={item.label}
         on:click={() => item.command($editor)}
       >
@@ -138,13 +137,13 @@
     {/each}
   </div>
 
-  <div use:melt={$separator} />
+  <div class="separator" use:melt={$separator} />
   
-  <div use:melt={$listGroup}>
+  <div use:melt={$listGroup} class="flex gap-3">
     {#each listItems as item (item.name)}
       <button
         use:melt={$list(item.name)}
-        class="{item.active($editor) ? 'is-active' : ''}"
+        class="btn-icon {item.active($editor) ? 'is-active' : ''}"
         aria-label={item.label}
         on:click={() => item.command($editor)}
         disabled={item.disabled($editor)}
@@ -154,13 +153,13 @@
     {/each}
   </div>
 
-  <div use:melt={$separator} />
+  <div class="separator" use:melt={$separator} />
 
-  <div use:melt={$blockGroup}>
+  <div use:melt={$blockGroup} class="flex gap-3">
     {#each blockItems as item (item.name)}
       <button
         use:melt={$block(item.name)}
-        class="{item.active($editor) ? 'is-active' : ''}"
+        class="btn-icon {item.active($editor) ? 'is-active' : ''}"
         aria-label={item.label}
         on:click={() => item.command($editor)}
       >
@@ -169,12 +168,13 @@
     {/each}
   </div>
 
-  <div use:melt={$separator} />
+  <div class="separator" use:melt={$separator} />
 
-  <div use:melt={$controlGroup}>
+  <div use:melt={$controlGroup} class="flex gap-3">
     {#each controlItems as item (item.name)}
       <button
         use:melt={$control(item.name)}
+        class="btn-icon"
         aria-label={item.label}
         on:click={() => item.command($editor)}
         disabled={item.disabled($editor)}
@@ -187,20 +187,28 @@
   <button 
     use:melt={$button}
     use:melt={$dialogTrigger}
+    class="btn ml-auto"
+    id="preview"
     aria-label="Preview"
   >
     Preview
   </button>
-  <div use:melt={$portalled}>
+  <div use:melt={$portalled} >
     {#if $dialogOpen}
-      <div use:melt={$overlay} />
-      <div use:melt={$content}>
+      <div use:melt={$overlay} class="fixed inset-0 z-10 bg-black/50" />
+      <div use:melt={$content} class="bg-surface-50-900-token z-50">
         <h2 use:melt={$title}>Preview content</h2>
         <p use:melt={$description}>This is how your content will look like when rendered.</p>
         {@html $editor.getHTML()}
         <button use:melt={$close}>Close</button>
       </div>
-      <button use:melt={$close} aria-label="close">
+      <button 
+        use:melt={$close}
+        aria-label="close"
+        class="absolute right-4 top-4 inline-flex h-6 w-6 appearance-none
+          items-center justify-center rounded-full p-1 text-gray-500
+          hover:bg-blue-100 focus:shadow-blue-400"
+      >
         <X />
       </button>
     {/if}
@@ -211,19 +219,25 @@
 <EditorContent editor={$editor} />
 </div>
 
-<style>
-  .menu {
-    background-color: white;
+<style lang="postcss">
+  button {
+    @apply variant-filled-primary rounded-token;
+
+    &:disabled {
+      @apply variant-soft-primary;
+    }
+
+    &#preview {
+      @apply variant-filled-tertiary;
+    }
+
+    &.is-active {
+      @apply variant-ringed-primary;
+    }
   }
 
-  .is-active {
-    background-color: black;
-    color: wheat;
-  }
-
-  button:disabled {
-    /* background-color: red; */
-    cursor: not-allowed;
+  .separator {
+    @apply bg-surface-300-600-token w-[1px] h-8;
   }
 
   .show {

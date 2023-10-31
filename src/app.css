@@ -36,6 +36,6 @@
   }
 
   input, textarea {
-    @apply bg-surface-100-800-token;
+    @apply bg-surface-100-800-token py-2 px-3 rounded-token border-token border-surface-900-50-token;
   }
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
   import CodeMirror from 'svelte-codemirror-editor';
   import { html } from '@codemirror/lang-html';
+  import './CodeEditor.css';
 
   export let value = '';
 </script>
@@ -23,9 +24,3 @@
     backgroundColor: "rgb(var(--color-surface-50))",
   },
 }} />
-
-<style>
-  :global(html.dark .cm-tooltip) {
-    background-color: rgb(var(--color-surface-900));
-  }
-</style>

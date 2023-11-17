@@ -31,9 +31,13 @@
 }
 
 @layer base {
-  code, kbd, pre {
-    font-family: 'Intel One Mono', ui-monospace, monospace;
-  }
+  h1, h2, h3 { @apply font-mono; }
+
+  h1 { @apply text-3xl font-bold mb-2; }
+  h2 { @apply text-xl font-bold; }
+  h3 { @apply text-lg; }
+
+  code, kbd, pre { @apply font-mono; }
 
   input, textarea {
     @apply bg-surface-100-800-token py-2 px-3 rounded-token border-token border-surface-900-50-token;

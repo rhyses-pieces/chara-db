@@ -1,5 +1,9 @@
 import { type Actions, fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
+import DOMPurify from "isomorphic-dompurify";
+import { nanoid } from "nanoid";
+
+const imageId = nanoid(11);
 
 export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
   const { data: chara, error: characterError } = await supabase
@@ -16,29 +20,41 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 }
 
 export const actions = {
+  upload: async ({ request, locals: { supabase, getSession } }) => {
+    const session = await getSession();
+    const form = await request.formData();
+
+    const username = session?.user.user_metadata.username as string;
+    const name = form.get('name') as string;
+    const image = form.get('image')?.valueOf() as File;
+    const fileExt = image.name.split('.').pop();
+    const filePath = `${username}/${name}-${imageId}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('chara_assets')
+      .upload(filePath, image);
+    
+    if (uploadError) throw uploadError;
+  },
+
   update: async ({ params, request, locals: { supabase } }) => {
     const form = await request.formData();
+    const name = form.get('name') as string;
     const content = form.get('content') as string;
+
+    const sanitize = DOMPurify.sanitize(content);
     
     const { error: updateCharaError } = await supabase
       .from('characters')
-      .update({ data: content })
-      .eq('id', params.id);
+      .update({ name: name, data: sanitize })
+      .eq('id', params.id)
+      .select();
     
-    if (updateCharaError) return fail(500, { message: updateCharaError.message });
+    if (updateCharaError) {
+      console.error(updateCharaError);
+      return fail(500, { message: updateCharaError.message })
+    };
 
-    return { message: 'successfully updated!' }
+    return { message: 'Successfully updated!' }
   },
-  
-  delete: async ({ request, locals: { supabase } }) => {
-    const form = await request.formData();
-    const id = form.get('id') as string;
-
-    const { error: deleteCharaError } = await supabase
-      .from('characters')
-      .delete()
-      .eq('id', id);
-    
-    if (deleteCharaError) return fail(500, { message: deleteCharaError.message, });
-  }
 } satisfies Actions;

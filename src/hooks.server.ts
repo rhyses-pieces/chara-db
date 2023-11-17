@@ -19,7 +19,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     if (!session) throw redirect(304, '/');
   }
 
-  if (event.url.pathname.startsWith('/chara') && event.request.method === 'POST') {
+  if (event.url.pathname.startsWith('/chara') && event.request.method !== 'GET') {
     const session = await event.locals.getSession();
     if (!session) throw error(304, '/');
   }

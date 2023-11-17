@@ -8,7 +8,7 @@ export default {
   darkMode: 'class',
   content: [
     './src/**/*.{svelte,html,js,ts}',
-    join(require.resolve('@skeletonlabs/skeleton'))
+    join(require.resolve('@skeletonlabs/skeleton'), '../**/*./**/*.{svelte,html,js,ts}'),
   ],
   theme: {
     extend: {

@@ -2,10 +2,10 @@
   import { enhance } from '$app/forms';
   import { enableCodeKey } from '$lib/store-keys';
   import { getContext } from 'svelte';
+  import { createSwitch, melt } from '@melt-ui/svelte';
+  import Dialog from '$lib/components/ui/Dialog.svelte';
   import type { Writable } from 'svelte/store';
   import type { SubmitFunction } from '@sveltejs/kit';
-  import { createDialog, createSwitch, melt } from '@melt-ui/svelte';
-  import { X } from 'lucide-svelte';
 
   export let data;
   export let form;
@@ -32,13 +32,6 @@
       update();
     }
   }
-
-  const {
-    elements: { trigger, overlay, content, title, description, close, portalled },
-    states: { open },
-  } = createDialog({
-    role: 'alertdialog',
-  });
 
   const {
     elements: { root, input },
@@ -88,53 +81,43 @@
   </section>
 
   <h2>Settings</h2>
-  <label for="enable-code" id="enable-code-label">Enable code editor?</label>
-  <p>If this is enabled, this will change the editor from WYSIWYG to source code!</p>
-  <button 
-    use:melt={$root}
-    class="relative h-6 cursor-default rounded-full bg-blue-800 transition-colors data-[state=checked]:bg-blue-950"
-    name="enable-code" 
-    id="enable-code" 
-    aria-labelledby="enable-code-label"
-  >
-    <span class="thumb block rounded-full bg-white transition" />
-  </button>
+  <h3>{JSON.parse($enableCode) ? "Disable" : "Enable"} code editor?</h3>
+  <p>If this is checked <strong>{JSON.parse($enableCode) ? "off" : "on"}</strong>, this will change the editor from {JSON.parse($enableCode) ? "code editor to WYSISYG" : "WYSIWYG to code editor"}!</p>
+  <label class="flex items-center gap-4 mt-2 mb-3 cursor-default">
+    <button 
+      use:melt={$root}
+      class="relative h-6 rounded-full bg-primary-500 transition-colors data-[state=checked]:bg-surface-900-50-token"
+      name="enable-code" 
+      id="enable-code" 
+    >
+      <span class="thumb block rounded-full bg-surface-50-900-token transition" />
+    </button>
+    <div>Checked {$input.checked ? "on" : "off"}</div>
+  </label>
   <input use:melt={$input} />
-  <button use:melt={$trigger}>Confirm change</button>
+  <Dialog confirm={true}>
+    <button slot="trigger" let:trigger use:trigger.action {...trigger} class="btn variant-filled-primary">
+      Confirm
+    </button>
+    
+    <header slot="title" let:title use:title.action {...title} class="font-mono font-bold text-2xl">
+      Are you sure you want to switch editor modes?
+    </header>
+    <p slot="description" let:description use:description.action {...description}>
+      You could potentially lose data upon switching editor modes. Do you want to confirm this choice?
+    </p>
 
-  <div use:melt={$portalled}>
-    {#if $open}
-      <div use:melt={$overlay} class="fixed inset-0 z-50 bg-black/50" />
-      <div 
-        use:melt={$content}
-        class="fixed left-[50%] top-[50%] z-50 max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-xl p-6 shadow-lg bg-surface-50"
-      >
-        <h2 use:melt={$title}>Are you sure you want to switch editor modes?</h2>
-        <p use:melt={$description}>You will lose data upon switching editor modes.</p>
-
-        <div class="mt-6 flex justify-end gap-4">
-          <button use:melt={$close}>Cancel</button>
-          <button 
-            type="submit"
-            use:melt={$close}
-            on:m-click={() => $enableCode = String($input.checked)}
-          >
-            Confirm
-          </button>
-        </div>
-
-        <button 
-          use:melt={$close}
-          aria-label="close"
-          class="absolute right-4 top-4 inline-flex h-6 w-6 appearance-none
-          items-center justify-center rounded-full p-1 text-gray-500
-          hover:bg-blue-100 focus:shadow-blue-400"
-        >
-          <X size={20} />
-        </button>
-      </div>
-    {/if}
-  </div>
+    <button 
+      slot="confirm" 
+      let:close 
+      use:close.action 
+      {...close} 
+      class="btn variant-filled-surface"
+      on:m-click={() => $enableCode = String($input.checked)}
+    >
+      Confirm
+    </button>
+  </Dialog>
 
   <form action="?/logout" method="post" use:enhance={handleLogout}>
     <button type="submit" disabled={loading}>Log out</button>

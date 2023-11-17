@@ -33,6 +33,10 @@ export const actions = {
     return { user };
   },
 
+  password: async ({ request, locals: { supabase } }) => {
+    
+  },
+
   logout: async ({ locals: { supabase, getSession } }) => {
     const session = await getSession();
     if (session) {

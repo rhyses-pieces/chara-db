@@ -16,6 +16,7 @@
     "@sveltejs/kit": "^1.27.1",
     "@types/node": "^20.8.9",
     "autoprefixer": "^10.4.16",
+    "codemirror-svelte": "^2.0.0",
     "postcss": "^8.4.31",
     "postcss-nesting": "^12.0.1",
     "svelte": "^4.2.2",
@@ -41,7 +42,6 @@
     "isomorphic-dompurify": "^1.9.0",
     "lucide-svelte": "^0.290.0",
     "nanoid": "^5.0.3",
-    "svelte-codemirror-editor": "^1.1.0",
     "svelte-tiptap": "^1.1.2"
   }
 }

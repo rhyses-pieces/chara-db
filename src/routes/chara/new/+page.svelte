@@ -15,15 +15,17 @@
 
 <section>
   <form method="post" action="?/submit" use:enhance>
+    <label id="name-label" for="content">Name</label>
     <input type="text" name="name" id="name" bind:value={$form.name} required />
     {#if $errors.name}
       <span class="text-sm text-error-50-900-token">Name is required!</span>
     {/if}
+    <label id="content-label" for="content" class="sr-only">Content</label>
     {#if $enableCode === 'true'}
-      <CodeEditor value={$form.content} />
+      <CodeEditor label="content-label" bind:value={$form.content} />
       <input type="hidden" name="content" id="content" bind:value={$form.content} />
     {:else}
-      <WyisygEditor bind:html={$form.content} />
+      <WyisygEditor label="content-label" bind:html={$form.content} />
       <input type="hidden" name="content" id="content" bind:value={$form.content} />
     {/if}
     <button type="submit">Add Character</button>

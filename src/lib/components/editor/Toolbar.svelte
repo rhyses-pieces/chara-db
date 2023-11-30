@@ -16,18 +16,16 @@
     elements: { root, separator, button },
     builders: { createToolbarGroup },
   } = createToolbar();
-
+  
   const {
-    elements: { group: textStyleGroup, item: textStyle },
+    elements: { group: textGroup, item: text },
   } = createToolbarGroup({
     type: 'multiple',
   });
 
   const {
     elements: { group: listGroup, item: list },
-  } = createToolbarGroup({
-    type: 'multiple',
-  });
+  } = createToolbarGroup();
 
   const {
     elements: { group: blockGroup, item: block },
@@ -38,20 +36,24 @@
   const {
     elements: { group: controlGroup, item: control },
   } = createToolbarGroup();
-  
-  $: action = $textStyle('heading');
+
+  $: action = $button;
 </script>
 
 <nav use:melt={$root} class="flex min-w-max items-center gap-3 my-3">
-  <div use:melt={$textStyleGroup} class="flex gap-3">
-    <ToolbarSelect bind:action editor={editor} />
-
+  <ToolbarSelect bind:action editor={editor} />
+  <div use:melt={$textGroup} class="flex gap-3">
     {#each textStyleItems as item (item.name)}
-      <button
-        use:melt={$textStyle(item.name)}
-        class="btn-icon {item.active(editor) ? 'is-active' : ''}"
+      <button 
+        use:melt={$text(item.name)}
+        class="btn-icon variant-filled-primary {item.active(editor) ? 'is-active' : ''}"
         aria-label={item.label}
         on:m-click={() => item.command(editor)}
+        on:m-keydown={(e) => {
+          const { key } = e.detail.originalEvent;
+          if (!['Space', 'Enter'].includes(key)) return;
+          item.command(editor);
+        }}
       >
         <svelte:component this={item.icon} />
       </button>
@@ -66,8 +68,13 @@
         use:melt={$list(item.name)}
         class="btn-icon {item.active(editor) ? 'is-active' : ''}"
         aria-label={item.label}
-        aria-disabled={item.disabled(editor)}
+        aria-disabled={(Object.keys(item).includes('disabled') && item.disabled !== undefined) ? item.disabled(editor) : null}
         on:m-click={() => item.command(editor)}
+        on:m-keydown={(e) => {
+          const { key } = e.detail.originalEvent;
+          if (!['Space', 'Enter'].includes(key)) return;
+          item.command(editor);
+        }}
       >
         <svelte:component this={item.icon} />
       </button>
@@ -83,6 +90,11 @@
         class="btn-icon {item.active(editor) ? 'is-active' : ''}"
         aria-label={item.label}
         on:m-click={() => item.command(editor)}
+        on:m-keydown={(e) => {
+          const { key } = e.detail.originalEvent;
+          if (!['Space', 'Enter'].includes(key)) return;
+          item.command(editor);
+        }}
       >
         <svelte:component this={item.icon} />
       </button>
@@ -99,6 +111,11 @@
         aria-label={item.label}
         aria-disabled={item.disabled(editor)}
         on:m-click={() => item.command(editor)}
+        on:m-keydown={(e) => {
+          const { key } = e.detail.originalEvent;
+          if (!['Space', 'Enter'].includes(key)) return;
+          item.command(editor);
+        }}
       >
         <svelte:component this={item.icon} aria-label={item.label} />
       </button>

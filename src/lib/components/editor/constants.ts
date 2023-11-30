@@ -111,7 +111,6 @@ const listItems = [
     icon: List,
     command: toggleBullet,
     active: isActive('bullet'),
-    disabled: () => false,
   },
   {
     name: 'ordered',
@@ -119,7 +118,6 @@ const listItems = [
     icon: ListOrdered,
     command: toggleOrder,
     active: isActive('ordered'),
-    disabled: () => false,
   },
   {
     name: 'indent-list',

@@ -7,6 +7,7 @@
   import './WYSIWYGEditor.css';
   
   let editor: Readable<Editor>;
+  export let label: string;
   export let html: string;
 
   onMount(() => {
@@ -14,6 +15,9 @@
       editorProps: {
         attributes: {
           tabindex: "0",
+          role: "textbox",
+          "aria-multiline": "true",
+          "aria-labelledby": label,
         }
       },
       autofocus: 'start',

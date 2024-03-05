@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "atkinson";
+  src: url("/fonts/AtkinsonHyperPro-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "atkinson";
+  src: url("/fonts/AtkinsonHyperPro-Italic.woff2") format("woff2");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "atkinson";
+  src: url("/fonts/AtkinsonHyperPro-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "atkinson";
+  src: url("/fonts/AtkinsonHyperPro-BoldItalic.woff2") format("woff2");
+  font-weight: bold;
+  font-style: italic;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@layer base {
+  h1, h2, h3 {
+    font-weight: bold;
+  }
+  h1:not(.prose) { @apply text-4xl; }
+  h2:not(.prose) { @apply text-3xl; }
+  h3:not(.prose) { @apply text-2xl; }
+
+  input:not(.input-error, .input-warning, .input-success) {
+    @apply input border border-black shadow transition-all focus:border-black focus:translate-x-[3px] focus:translate-y-[3px] focus:shadow-none;
+  }
+}
+
+@layer components {
+  .btn:not(.btn-ghost) {
+    @apply border border-black shadow hover:shadow-none;
+  }
+
+  .dropdown-content {
+    @apply menu border border-black shadow mt-3 rounded;
+  }
+}

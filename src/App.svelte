@@ -1,6 +1,7 @@
 <script lang="ts">
   import { path, resolve, params } from "elegua";
   import Navbar from "$lib/components/Navbar.svelte";
+  import Toasts from "$lib/components/Toasts.svelte";
 
   import Home from "@/Home.svelte";
   import About from "@/About.svelte";
@@ -15,6 +16,7 @@
   import Settings from "@/user/Settings.svelte";
 </script>
 
+<Toasts />
 <Navbar />
 
 <main>
@@ -28,10 +30,10 @@
     <Register />
   {:else if $path === "/chara"}
     <Chara />
-  {:else if resolve($path, "/chara/:id")}
-    <CharaSingle id={$params["id"]} />
   {:else if $path === "/chara/new"}
     <CharaNew />
+  {:else if resolve($path, "/chara/:id")}
+    <CharaSingle id={$params["id"]} />
   {:else if $path === "/user"}
     <User />
   {:else if resolve($path, "/user/:id")}
@@ -43,19 +45,10 @@
   {/if}
 </main>
 
-<footer>
+<footer class="footer">
   copyleft stuff
 </footer>
 
 <style lang="postcss">
-  main {
-    display: grid;
-    grid-template-columns: 1fr min(65ch, calc(100% - 4rem)) 1fr;
-
-    & > * { grid-column: 2; }
-  }
-
-  footer {
-    margin-top: auto;
-  }
+  footer { margin-top: auto; }
 </style>

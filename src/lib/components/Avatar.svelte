@@ -11,9 +11,9 @@
     </div>
   </figure>
 {:else}
-  <figure class="avatar placeholder">
-    <div class={`w-${size} bg-blue-500 border border-black rounded-full p-3 shadow hover:shadow-none`}>
-      <span class={width === "small" ? "text-md" : "text-3xl"}>Hi</span>
+  <div class="avatar placeholder" aria-label="Placeholder avatar">
+    <div class={`w-${size} bg-blue-500 bordered rounded-full p-3 shadow hover:shadow-none`}>
+      <span class={width === "small" ? "text-md" : "text-3xl"} aria-hidden="true">Hi</span>
     </div>
-  </figure>
+  </div>
 {/if}

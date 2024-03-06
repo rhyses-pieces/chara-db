@@ -4,14 +4,20 @@
 </script>
 
 <nav id="character-nav">
-  <ul>
-    <li>create new chara</li>
-    <li>browse</li>
-    <li>random</li>
+  <ul class="menu menu-vertical lg:menu-horizontal">
+    <li><a href="/chara/new">create new chara</a></li>
+    <li><a href="/chara">Browse</a></li>
+    <li><a href="/chara/random">random</a></li>
   </ul>
 </nav>
 
-<h1>Characters</h1>
 <section>
+  <h1>Characters</h1>
   cards here
 </section>
+
+<style lang="postcss">
+  #character-nav {
+    grid-column: 1 / -1;
+  }
+</style>

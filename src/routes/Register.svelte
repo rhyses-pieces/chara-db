@@ -17,13 +17,18 @@
   });
 
   const suite = registerSuite;
-  const { form } = createForm({
+  const { form, isValid } = createForm({
     onSubmit: async (values) => {
       await pb.collection("users").create(values);
       await pb.collection("users").authWithPassword(values.username as string, values.password as string);
       suite.reset();
     },
     onSuccess: () => {
+      triggerToast({
+        message: "Registration success! Redirecting you to your new profile page...",
+        type: "success",
+        timeout: 5000,
+      });
       goto("/user");
       suite.reset();
     },
@@ -85,6 +90,6 @@
       <span aria-live="polite" class="label-text-alt mt-2 place-self-end">{message || ""}</span>
     </ValidationMessage>
   </label>
-  <button type="submit" class="btn btn-primary place-self-end w-1/2">Register</button>
+  <button type="submit" class="btn btn-primary place-self-end w-1/2" disabled={!$isValid}>Register</button>
   <a href="/login" class="place-self-start">Already have an account? Log in here!</a>
 </form>

@@ -1,22 +1,30 @@
 <script lang="ts">
   import { user } from "$lib/utils/pocketbase";
+  import Dialog from "$lib/components/Dialog.svelte";
 
+  let triggerDialog = false;
 </script>
 
 <h1>Settings</h1>
 {#if $user !== null}
-<h2>Change Password</h2>
-  <form action="">
-    <label class="form-control">
-      <span class="label-text">Change password:</span>
-      <input type="password" id="password" name="password" autocomplete="new-password" />
-    </label>
-    <label class="form-control">
-      <span class="label-text">Confirm new password:</span>
-      <input type="password" id="confirm" name="confirm" autocomplete="off" />
-    </label>
-    <button type="submit" class="btn btn-primary w-1/2 place-self-end">Submit</button>
-  </form>
+<h2>Change editor modes</h2>
+<div class="form-control">
+  <label class="label cursor-pointer">
+    <span class="label-text">Enable</span>
+    <input type="checkbox" class="toggle" on:click={() => (triggerDialog = true)} />
+  </label>
+</div>
+
+<Dialog bind:triggerDialog>
+  <h2 slot="title">Are you sure?</h2>
+  <p>If you switch now, there might be data loss.</p>
+  <div slot="button">
+    <form method="dialog" class="modal-action">
+      <button class="btn btn-error">Yes</button>
+      <button class="btn bg-gray-500">No</button>
+    </form>
+  </div>
+</Dialog>
 {/if}
 
 <h2>Select Theme</h2>

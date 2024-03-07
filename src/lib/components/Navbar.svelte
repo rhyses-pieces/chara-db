@@ -13,7 +13,7 @@
       <li><a href="/chara">Characters</a></li>
     </ul>
     <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="Toggle submenu">
         <Avatar width="small" />
       </div>
       <!-- svelte-ignore a11y-no-noninteractive-tabindex -->

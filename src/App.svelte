@@ -1,5 +1,7 @@
 <script lang="ts">
   import { path, resolve, params } from "elegua";
+  import { onMount } from "svelte";
+  import { pb, user } from "$lib/utils/pocketbase";
   import Navbar from "$lib/components/Navbar.svelte";
   import Toasts from "$lib/components/Toasts.svelte";
 
@@ -14,6 +16,13 @@
   import User from "@/user/User.svelte";
   import UserSingle from "@/user/UserSingle.svelte";
   import Settings from "@/user/Settings.svelte";
+  
+  onMount(async () => {
+    let session = window.localStorage.getItem("pocketbase_auth");
+    if (session) {
+      if (pb.authStore.isValid) await pb.collection("users").authRefresh();
+    }
+  });
 </script>
 
 <Toasts />
@@ -36,8 +45,8 @@
     <CharaSingle id={$params["id"]} />
   {:else if $path === "/user"}
     <User />
-  {:else if resolve($path, "/user/:id")}
-    <UserSingle id={$params["id"]} />
+  {:else if resolve($path, "/user/:name")}
+    <UserSingle name={$params["name"]} />
   {:else if $path === "/settings"}
     <Settings />
   {:else}

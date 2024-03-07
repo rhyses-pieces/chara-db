@@ -23,6 +23,11 @@
       suite.reset();
     },
     onSuccess: () => {
+      triggerToast({
+        message: "Successfully logged in! Redirecting you to your profile page...",
+        type: "success",
+        timeout: 5000,
+      });
       goto("/user");
       suite.reset();
     },

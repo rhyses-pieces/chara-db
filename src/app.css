@@ -30,6 +30,9 @@
   font-style: italic;
 }
 
+body { @apply bg-neutral-50; }
+[data-theme="dark"] body { @apply bg-neutral-950; }
+
 #app {
   min-height: 100vh;
   display: flex;
@@ -47,7 +50,7 @@
   h2:not(.prose) { @apply text-3xl; }
   h3:not(.prose) { @apply text-2xl; }
 
-  input:not(.input-error, .input-warning, .input-success) {
+  input:not(.input-error, .input-warning, .input-success, .checkbox, .select, .range, .radio, .toggle) {
     @apply input bordered shadow transition-all focus:border-black focus:translate-x-[3px] focus:translate-y-[3px] focus:shadow-none;
   }
 
@@ -64,7 +67,7 @@
     }
   }
 
-  form {
+  form:not([method="dialog"]) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -74,7 +77,7 @@
 @layer components {
   .btn:not(.btn-ghost) { @apply bordered shadow hover:shadow-none; }
   .btn-primary { @apply bg-blue-500 hover:bg-blue-400 text-current text-xl; }
-  .dropdown-content { @apply menu bordered shadow mt-2 z-[1] rounded; }
+  .dropdown-content { @apply menu bordered shadow mt-1 z-[1] rounded; }
 }
 
 @layer utilities {

@@ -5,8 +5,6 @@
   import { onMount } from "svelte";
   import { goto } from "elegua";
 
-  // grab user info
-  // mount that shit
   onMount(() => {
     if ($user === null) goto("/login");
   });
@@ -38,8 +36,9 @@
       <Avatar />
     </div>
     <h2>Update Avatar</h2>
-    <form>
-      <input type="file" class="input file-input" />
+    <form name="avatar" enctype="multipart/form-data">
+      <input type="file" class="input file-input focus:border-black" />
+      <button class="btn btn-primary">Upload</button>
     </form>
     <div class="clear-both"></div>
     <h2>Info</h2>

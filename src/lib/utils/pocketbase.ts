@@ -23,8 +23,10 @@ export const doesUserExist = async (name: string) => {
 }
 
 // edit user
-export const uploadAvatar = (form: FormData) => {
-
+export const editEmail = async (email: string) => {
+  const form = new FormData();
+  form.append('email', email);
+  
 }
 
 // add chara

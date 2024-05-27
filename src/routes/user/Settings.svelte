@@ -1,5 +1,6 @@
 <script lang="ts">
   import { user } from "$lib/utils/pocketbase";
+  import { enableCode } from "$lib/utils/stores";
   import Dialog from "$lib/components/Dialog.svelte";
 
   let triggerDialog = false;
@@ -11,7 +12,8 @@
 <div class="form-control">
   <label class="label cursor-pointer">
     <span class="label-text">Enable</span>
-    <input type="checkbox" class="toggle" on:click={() => (triggerDialog = true)} />
+    <input type="checkbox" class="toggle" bind:checked={$enableCode} on:click={() => (triggerDialog = true)} />
+    {$enableCode}
   </label>
 </div>
 
@@ -21,7 +23,8 @@
   <div slot="button">
     <form method="dialog" class="modal-action">
       <button class="btn btn-error">Yes</button>
-      <button class="btn bg-gray-500">No</button>
+      <!-- this is to reset the bind:checked value to the previous value -->
+      <button class="btn bg-gray-500" on:click={() => $enableCode = !$enableCode}>No</button>
     </form>
   </div>
 </Dialog>

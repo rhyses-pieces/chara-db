@@ -27,6 +27,24 @@
       });
     }
   }
+
+  const formData = new FormData();
+  let files: FileList;
+
+  $: if (files) {
+    for (let file of files) {
+      formData.append("avatar", file);
+    }
+  }
+
+  const uploadAvatar = async () => {
+    try {
+      const file = formData.getAll("avatar")[0];
+      return await pb.collection("users").update($user!.id, { avatar: file });
+    } catch (err) {
+      console.error(err);
+    }
+  }
 </script>
 
 {#if $user !== null}
@@ -36,10 +54,8 @@
       <Avatar />
     </div>
     <h2>Update Avatar</h2>
-    <form name="avatar" enctype="multipart/form-data">
-      <input type="file" class="input file-input focus:border-black" />
-      <button class="btn btn-primary">Upload</button>
-    </form>
+    <input type="file" bind:files class="input file-input focus:border-black" />
+    <button class="btn btn-primary" on:click={uploadAvatar}>Upload</button>
     <div class="clear-both"></div>
     <h2>Info</h2>
     <p>Joined on: {new Date($user.created).toLocaleDateString()}</p>

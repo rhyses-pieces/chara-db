@@ -2,8 +2,8 @@
   import { createEventDispatcher } from "svelte";
   import Info from "lucide-svelte/icons/info";
   import Skull from "lucide-svelte/icons/skull";
-  import AlertCircle from "lucide-svelte/icons/alert-circle";
-  import CheckCircle from "lucide-svelte/icons/check-circle";
+  import CircleAlert from "lucide-svelte/icons/circle-alert";
+  import CircleCheck from "lucide-svelte/icons/circle-check";
   import X from "lucide-svelte/icons/x";
 
   const dispatch = createEventDispatcher();
@@ -23,9 +23,9 @@
   {:else if type === "error"}
     <Skull aria-label="Error icon" aria-hidden="true" />
   {:else if type === "warning"}
-    <AlertCircle aria-label="Warning icon" aria-hidden="true" />
+    <CircleAlert aria-label="Warning icon" aria-hidden="true" />
   {:else if type === "success"}
-    <CheckCircle aria-label="Success icon" aria-hidden="true" />
+    <CircleCheck aria-label="Success icon" aria-hidden="true" />
   {:else}
     {#if $$slots.icon}
       <slot name="icon" />
@@ -39,7 +39,7 @@
 
   {#if dismissable}
     <button class={`btn btn-circle btn-sm`} aria-label="Close" on:click={() => dispatch("dismiss")}>
-      <X aria-label="Close icon" aria-hidden="true" />
+      <X aria-label="Close icon" aria-hidden="true" size="0.8em" />
     </button>
   {/if}
 </aside>

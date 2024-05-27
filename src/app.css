@@ -51,7 +51,11 @@ body { @apply bg-neutral-50; }
   h3:not(.prose) { @apply text-2xl; }
 
   input:not(.input-error, .input-warning, .input-success, .checkbox, .select, .range, .radio, .toggle) {
-    @apply input bordered shadow transition-all focus:border-black focus:translate-x-[3px] focus:translate-y-[3px] focus:shadow-none;
+    @apply input;
+  }
+
+  input:not(.input-error, .input-warning, .input-success, .checkbox, .select, .range, .radio, .toggle), .textarea {
+    @apply bordered shadow transition-all focus:border-black focus:translate-x-[3px] focus:translate-y-[3px] focus:shadow-none;
   }
 
   input[aria-invalid="true"] { @apply input-error shadow shadow-error; }

@@ -8,6 +8,13 @@ type Toast = {
   timeout: number;
 }
 
+const setEnableCode = localStorage.getItem("enableCode");
+const setTheme = localStorage.getItem("theme");
+export const enableCode: Writable<boolean> = writable(JSON.parse(setEnableCode!) || false);
+export const theme: Writable<string> = writable(JSON.parse(setTheme!) || null);
+enableCode.subscribe(value => localStorage.setItem("enableCode", String(value)));
+theme.subscribe(value => localStorage.setItem("theme", value));
+
 export const toasts: Writable<Toast[]> = writable([]);
 
 export const dismissToast = (id: number) => {

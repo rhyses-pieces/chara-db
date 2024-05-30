@@ -2,6 +2,7 @@
   import { path, resolve, params } from "elegua";
   import { onMount } from "svelte";
   import { pb, user } from "$lib/utils/pocketbase";
+  import { theme } from "$lib/utils/stores";
   import Navbar from "$lib/components/Navbar.svelte";
   import Toasts from "$lib/components/Toasts.svelte";
 
@@ -23,6 +24,8 @@
       if (pb.authStore.isValid) await pb.collection("users").authRefresh();
     }
   });
+
+  $: document.documentElement.dataset.theme = $theme;
 </script>
 
 <Toasts />

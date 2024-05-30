@@ -42,3 +42,33 @@ export const registerSuite = create("form", (data, currentField) => {
     });
   }
 });
+
+export const editEmailSuite = create("form", (data, currentField) => {
+  only(currentField);
+
+  test("email", "Email must be in correct format", () => {
+    enforce(data.email).isEmail();
+  });
+
+  if (data.email) {
+    test("emailConfirm", "Emails do not match!", () => {
+      enforce(data.emailConfirm).equals(data.email);
+    });
+  }
+});
+
+export const editPasswordSuite = create("form", (data, currentField) => {
+  only(currentField);
+
+  test("password", "Password must be 8 characters or longer.", () => {
+    warn();
+    if (!data.password) return;
+    enforce(data.password).longerThanOrEquals(8);
+  });
+
+  if (data.password) {
+    test("passwordConfirm", "Passwords do not match!", () => {
+      enforce(data.passwordConfirm).equals(data.password);
+    });
+  }
+});

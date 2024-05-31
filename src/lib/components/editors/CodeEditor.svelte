@@ -10,8 +10,10 @@
 
   const dispatch = createEventDispatcher();
 
+  let triggerDialog = false;
   let editor: ace.Editor;
-  let value: string = "";
+  export let value = "";
+  export let label = "";
   let contentBackup: string = "";
   let element: HTMLElement;
 
@@ -37,9 +39,9 @@
     editor.setOptions({
       enableBasicAutocompletion: true,
       enableSnippets: true,
-      enableLiveAutocompletion: true,
+      enableLiveAutocompletion: false,
+      enableEmmet: true,
     });
-    editor.setOption("enableEmmet", true);
     editor.$blockScrolling = Infinity;
     editor.setValue(value, 1);
     contentBackup = value;
@@ -57,5 +59,19 @@
 </script>
 
 <div style="height: 300px;">
-  <div id="editor" class="textarea bordered shadow" style="height: 300px;" bind:this={element}></div>
+  <div id="editor" class="textarea bordered shadow" aria-labelledby={label} style="height: 300px;" bind:this={element}></div>
 </div>
+
+<button class="btn btn-primary mt-2" on:click={() => triggerDialog = true}>Preview</button>
+
+<Dialog bind:triggerDialog id="preview" width="big">
+  <h2 slot="title">Preview</h2>
+  <div class="bg-base-200 p-2 rounded min-h-48">
+    {@html value}
+  </div>
+  <div slot="button">
+    <form method="dialog" class="modal-action">
+      <button class="btn bg-gray-500">Close</button>
+    </form>
+  </div>
+</Dialog>

@@ -19,7 +19,7 @@
   </label>
 </div>
 
-<Dialog bind:triggerDialog>
+<Dialog bind:triggerDialog id="enable-code-confirm">
   <h2 slot="title">Are you sure?</h2>
   <p>If you switch now, there might be data loss.</p>
   <div slot="button">

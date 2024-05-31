@@ -43,6 +43,11 @@
       return await pb.collection("users").update($user!.id, { avatar: file });
     } catch (err) {
       console.error(err);
+      triggerToast({
+        message: "Something went wrong with uploading your avatar!",
+        type: "error",
+        timeout: 5000,
+      });
     }
   }
 </script>
@@ -54,14 +59,23 @@
       <Avatar />
     </div>
     <h2>Update Avatar</h2>
-    <input type="file" bind:files class="input file-input focus:border-black" />
-    <button class="btn btn-primary" on:click={uploadAvatar}>Upload</button>
+    <div class="flex flex-col gap-2">
+      <input type="file" bind:files class="input file-input focus:border-black" />
+      <button class="btn btn-primary" on:click={uploadAvatar}>Upload</button>
+    </div>
     <div class="clear-both"></div>
     <h2>Info</h2>
-    <p>Joined on: {new Date($user.created).toLocaleDateString()}</p>
+    <p>Joined on: {new Date($user.created).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</p>
     <pre>{JSON.stringify($user, null, 2)}</pre>
+    {#if $user.emailVisibility}
+      <p>{$user.email} is visible</p>
+      <button>hide email?</button>
+    {:else}
+      <p>{$user.email} is not visible</p>
+      <button>show email?</button>
+    {/if}
     {#if !$user.verified}
-      <button on:click={requestVerify}>Verify me</button>
+      <button class="btn btn-outline" on:click={requestVerify}>Verify me</button>
     {/if}
   </section>
 {/if}

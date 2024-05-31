@@ -13,9 +13,9 @@
   <input type="hidden" bind:value={content} />
 </label>
 {#if $enableCode}
-  <CodeEditor />
+  <CodeEditor label="editor-label" bind:value={content} />
 {:else}
-  <RichTextEditor label="editor-label" bind:content={content} />  
+  <RichTextEditor label="editor-label" bind:value={content} />  
 {/if}
 
 

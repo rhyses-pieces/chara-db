@@ -7,14 +7,12 @@
     toggleCodeBlock,
     toggleOrder,
     setHr,
-    setParagraph,
     indentList,
     outdentList,
     undo,
     redo,
     removeFormat,
   } from "./Editor";
-  import Pilcrow from "lucide-svelte/icons/pilcrow";
   import List from "lucide-svelte/icons/list";
   import ListOrdered from "lucide-svelte/icons/list-ordered";
   import IndentIncrease from "lucide-svelte/icons/indent-increase";
@@ -31,16 +29,27 @@
 </script>
 
 <div role="toolbar">
-  <button on:click={() => setParagraph(editor)}><Pilcrow /></button>
-  <button on:click={() => toggleBullet(editor)}><List /></button>
-  <button on:click={() => toggleOrder(editor)}><ListOrdered /></button>
-  <button on:click={() => indentList(editor)}><IndentIncrease /></button>
-  <button on:click={() => outdentList(editor)}><IndentDecrease /></button>
-  <button on:click={() => toggleBlockquote(editor)}><TextQuote /></button>
-  <button on:click={() => toggleCode(editor)}><Code /></button>
-  <button on:click={() => toggleCodeBlock(editor)}><SquareCode /></button>
-  <button on:click={() => setHr(editor)}><Minus /></button>
-  <button on:click={() => undo(editor)}><Undo2 /></button>
-  <button on:click={() => redo(editor)}><Redo2 /></button>
-  <button on:click={() => removeFormat(editor)}><RemoveFormatting /></button>
+  <button on:click={() => toggleBullet(editor)}><List aria-label="Set bulleted list" /></button>
+  <button on:click={() => toggleOrder(editor)}><ListOrdered aria-label="Set ordered list" /></button>
+  <button on:click={() => indentList(editor)}><IndentIncrease aria-label="Increase indent" /></button>
+  <button on:click={() => outdentList(editor)}><IndentDecrease aria-label="Decrease indent" /></button>
+  <button on:click={() => toggleBlockquote(editor)}><TextQuote aria-label="Set blockquote" /></button>
+  <button on:click={() => toggleCode(editor)}><Code aria-label="Set code snippet" /></button>
+  <button on:click={() => toggleCodeBlock(editor)}><SquareCode aria-label="Set codeblock" /></button>
+  <button on:click={() => setHr(editor)}><Minus aria-label="Set horizontal line" /></button>
+  <button on:click={() => undo(editor)}><Undo2 aria-label="Undo" /></button>
+  <button on:click={() => redo(editor)}><Redo2 aria-label="Redo" /></button>
+  <button on:click={() => removeFormat(editor)}><RemoveFormatting aria-label="Remove formatting" /></button>
 </div>
+
+<style lang="postcss">
+  [role="toolbar"] {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  button {
+    @apply btn btn-square;
+  }
+</style>

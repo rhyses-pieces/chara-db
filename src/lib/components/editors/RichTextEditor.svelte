@@ -4,13 +4,18 @@
   import { createEditor, Editor, EditorContent, BubbleMenu } from "svelte-tiptap";
   import StarterKit from "@tiptap/starter-kit";
   import RichTextToolbar from "./RichTextToolbar.svelte";
-  import { toggleBold, toggleItalic, toggleStrike } from "./Editor";
+  import { setParagraph, toggleBold, toggleItalic, toggleStrike } from "./Editor";
+  import Pilcrow from "lucide-svelte/icons/pilcrow";
   import Bold from "lucide-svelte/icons/bold";
   import Italic from "lucide-svelte/icons/italic";
   import Strikethrough from "lucide-svelte/icons/strikethrough";
+  import Heading1 from "lucide-svelte/icons/heading-1";
+  import Heading2 from "lucide-svelte/icons/heading-2";
+  import Heading3 from "lucide-svelte/icons/heading-3";
+  import ChevronDown from "lucide-svelte/icons/chevron-down";
   
   export let label: string;
-  export let content: string;
+  export let value: string;
   let editor: Readable<Editor>;
 
   onMount(() => {
@@ -25,12 +30,12 @@
       },
       extensions: [StarterKit],
       onCreate: ({ editor }) => {
-        if (content !== undefined) {
-          editor.commands.setContent(content);
+        if (value !== undefined) {
+          editor.commands.setContent(value);
         }
       },
       onUpdate: () => {
-        content = $editor.getHTML();
+        value = $editor.getHTML();
       },
     });
   });
@@ -45,9 +50,31 @@
 {#if editor}
   <BubbleMenu editor={$editor}>
     <div id="bubble" class="bg-base-100 p-2 bordered rounded shadow">
-      <button on:click={() => toggleBold($editor)}><Bold /></button>
-      <button on:click={() => toggleItalic($editor)}><Italic /></button>
-      <button on:click={() => toggleStrike($editor)}><Strikethrough /></button>
+      <div class="dropdown">
+        <div role="button" tabindex="0" class="btn m-1">Set heading <ChevronDown /></div>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 bordered rounded-box w-52">
+          <li><button on:click={() => setParagraph($editor)} class:active={$editor.isActive('paragraph')}><Pilcrow /> Paragraph</button></li>
+          <li><button on:click={() => $editor.chain().focus().setHeading({ level: 1 }).run()} class:active={$editor.isActive('heading', { level: 1 })}><Heading1 /> Heading 1</button></li>
+          <li><button on:click={() => $editor.chain().focus().setHeading({ level: 2 }).run()} class:active={$editor.isActive('heading', { level: 2 })}><Heading2 /> Heading 2</button></li>
+          <li><button on:click={() => $editor.chain().focus().setHeading({ level: 3 }).run()} class:active={$editor.isActive('heading', { level: 3 })}><Heading3 /> Heading 3</button></li>
+        </ul>
+      </div>
+      <button class="btn btn-square" on:click={() => toggleBold($editor)}><Bold /></button>
+      <button class="btn btn-square" on:click={() => toggleItalic($editor)}><Italic /></button>
+      <button class="btn btn-square" on:click={() => toggleStrike($editor)}><Strikethrough /></button>
     </div>
   </BubbleMenu>
 {/if}
+
+<style lang="postcss">
+  #bubble {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .active {
+      @apply font-bold text-base-content bg-base-200;
+    }
+  }
+</style>

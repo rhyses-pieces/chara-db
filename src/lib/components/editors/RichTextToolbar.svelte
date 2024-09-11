@@ -28,15 +28,17 @@
   export let editor: Editor;
 </script>
 
-<div role="toolbar">
+<div role="toolbar" class="flex gap-2">
   <button on:click={() => toggleBullet(editor)}><List aria-label="Set bulleted list" /></button>
   <button on:click={() => toggleOrder(editor)}><ListOrdered aria-label="Set ordered list" /></button>
   <button on:click={() => indentList(editor)}><IndentIncrease aria-label="Increase indent" /></button>
   <button on:click={() => outdentList(editor)}><IndentDecrease aria-label="Decrease indent" /></button>
+  <hr>
   <button on:click={() => toggleBlockquote(editor)}><TextQuote aria-label="Set blockquote" /></button>
   <button on:click={() => toggleCode(editor)}><Code aria-label="Set code snippet" /></button>
   <button on:click={() => toggleCodeBlock(editor)}><SquareCode aria-label="Set codeblock" /></button>
   <button on:click={() => setHr(editor)}><Minus aria-label="Set horizontal line" /></button>
+  <hr>
   <button on:click={() => undo(editor)}><Undo2 aria-label="Undo" /></button>
   <button on:click={() => redo(editor)}><Redo2 aria-label="Redo" /></button>
   <button on:click={() => removeFormat(editor)}><RemoveFormatting aria-label="Remove formatting" /></button>
@@ -44,9 +46,11 @@
 
 <style lang="postcss">
   [role="toolbar"] {
-    display: flex;
-    gap: 0.5rem;
-    margin: 0.5rem 0;
+    @apply text-sm;
+
+    hr {
+      @apply h-1/2 mx-1 self-center justify-self-center;
+    }
   }
 
   button {

@@ -43,32 +43,18 @@ export const registerSuite = create("form", (data, currentField) => {
   }
 });
 
-export const editEmailSuite = create("form", (data, currentField) => {
-  only(currentField);
-
+export const editEmailSuite = create("form", data => {
   test("email", "Email must be in correct format", () => {
-    enforce(data.email).isEmail();
+    enforce(data.newEmail).isEmail();
   });
-
-  if (data.email) {
-    test("emailConfirm", "Emails do not match!", () => {
-      enforce(data.emailConfirm).equals(data.email);
-    });
-  }
 });
 
-export const editPasswordSuite = create("form", (data, currentField) => {
-  only(currentField);
-
-  test("password", "Password must be 8 characters or longer.", () => {
-    warn();
-    if (!data.password) return;
-    enforce(data.password).longerThanOrEquals(8);
+export const addChara = create("form", data => {
+  test("name", "Name is required", () => {
+    enforce(data.name).isNotEmpty();
   });
 
-  if (data.password) {
-    test("passwordConfirm", "Passwords do not match!", () => {
-      enforce(data.passwordConfirm).equals(data.password);
-    });
-  }
+  test("content", "Content must not be empty", () => {
+    enforce(data.content).isNotEmpty();
+  });
 });

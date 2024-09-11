@@ -1,4 +1,5 @@
 <script lang="ts">
+  import DOMPurify from "dompurify";
   import * as ace from "brace";
   import "brace/ext/language_tools";
   import "brace/ext/emmet";
@@ -58,16 +59,18 @@
   }
 </script>
 
-<div style="height: 300px;">
-  <div id="editor" class="textarea bordered shadow" aria-labelledby={label} style="height: 300px;" bind:this={element}></div>
+<div role="toolbar" id="code-editor" class="mt-[-1rem]">
+  <button class="btn btn-success">Save</button>
+  <button class="btn btn-neutral mt-2" on:click={() => triggerDialog = true}>Preview</button>
 </div>
-
-<button class="btn btn-primary mt-2" on:click={() => triggerDialog = true}>Preview</button>
+<div style="height: 300px;">
+  <div id="editor" class="textarea bordered" aria-labelledby={label} style="height: 300px;" bind:this={element}></div>
+</div>
 
 <Dialog bind:triggerDialog id="preview" width="big">
   <h2 slot="title">Preview</h2>
   <div class="bg-base-200 p-2 rounded min-h-48">
-    {@html value}
+    {@html DOMPurify.sanitize(value, { USE_PROFILES: { html: true } })}
   </div>
   <div slot="button">
     <form method="dialog" class="modal-action">
@@ -75,3 +78,9 @@
     </form>
   </div>
 </Dialog>
+
+<style lang="postcss">
+  #code-editor {
+    @apply flex flex-wrap items-baseline justify-end gap-2;
+  }
+</style>

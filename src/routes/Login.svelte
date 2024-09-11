@@ -10,7 +10,7 @@
   
   onMount(() => {
     if ($user !== null) goto("/user");
-    window.onbeforeunload = (event) => {
+    window.onbeforeunload = event => {
       if (event) suite.reset();
       suite.reset();
     }

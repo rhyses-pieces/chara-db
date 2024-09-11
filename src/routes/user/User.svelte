@@ -18,8 +18,6 @@
         timeout: 8000,
       });
     } catch (err) {
-      // toast if theres an error
-      console.error(err);
       triggerToast({
         message: "Something went wrong with verifying your email!",
         type: "error",
@@ -28,23 +26,31 @@
     }
   }
 
-  const formData = new FormData();
   let files: FileList;
 
-  $: if (files) {
-    for (let file of files) {
-      formData.append("avatar", file);
-    }
-  }
-
-  const uploadAvatar = async () => {
+  const uploadAvatar = async (event: Event) => {
     try {
+      const formData = new FormData(event.currentTarget as HTMLFormElement);
       const file = formData.getAll("avatar")[0];
       return await pb.collection("users").update($user!.id, { avatar: file });
     } catch (err) {
-      console.error(err);
       triggerToast({
         message: "Something went wrong with uploading your avatar!",
+        type: "error",
+        timeout: 5000,
+      });
+    }
+  }
+
+  const changeEmailVisiblity = async (event: Event) => {
+    try {
+      const formData = new FormData(event.currentTarget as HTMLFormElement);
+      const emailVisibility = formData.get("emailVisibility");
+      console.log(emailVisibility === "on");
+      return await pb.collection("users").update($user!.id, { emailVisibility: emailVisibility === "on" ? true : false });
+    } catch (err) {
+      triggerToast({
+        message: "Something went wrong with updating your settings!",
         type: "error",
         timeout: 5000,
       });
@@ -53,27 +59,33 @@
 </script>
 
 {#if $user !== null}
-  <h1>Welcome back, {$user.username}!</h1>
+  <h1>Welcome back, {$user.name !== "" ? $user.name : $user.username}!</h1>
   <section>
     <div class="float-left mr-5 mb-5">
       <Avatar />
     </div>
     <h2>Update Avatar</h2>
-    <div class="flex flex-col gap-2">
-      <input type="file" bind:files class="input file-input focus:border-black" />
-      <button class="btn btn-primary" on:click={uploadAvatar}>Upload</button>
-    </div>
+    <form on:submit|preventDefault={uploadAvatar}>
+      <input type="file" bind:files name="avatar" id="avatar" class="input file-input focus:border-black" />
+      <button class="btn btn-primary">Upload</button>
+    </form>
     <div class="clear-both"></div>
     <h2>Info</h2>
     <p>Joined on: {new Date($user.created).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-    <pre>{JSON.stringify($user, null, 2)}</pre>
     {#if $user.emailVisibility}
       <p>{$user.email} is visible</p>
-      <button>hide email?</button>
     {:else}
       <p>{$user.email} is not visible</p>
-      <button>show email?</button>
     {/if}
+    <form on:submit|preventDefault={changeEmailVisiblity}>
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Set email to visible?</span>
+          <input class="checkbox" type="checkbox" name="emailVisibility" id="emailVisibility" />
+        </label>
+      </div>
+      <button class="btn btn-primary">Submit</button>
+    </form>
     {#if !$user.verified}
       <button class="btn btn-outline" on:click={requestVerify}>Verify me</button>
     {/if}

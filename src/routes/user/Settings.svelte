@@ -1,9 +1,48 @@
 <script lang="ts">
-  import { user } from "$lib/utils/pocketbase";
-  import { enableCode, theme } from "$lib/utils/stores";
+  import { pb, user } from "$lib/utils/pocketbase";
+  import { enableCode, theme, triggerToast } from "$lib/utils/stores";
+  import { editEmailSuite } from "$lib/utils/suite";
   import Dialog from "$lib/components/Dialog.svelte";
+  import ChevronDown from "lucide-svelte/icons/chevron-down";
+  import { createForm } from "felte";
+  import { onMount } from "svelte";
+  import { ValidationMessage, reporter } from "@felte/reporter-svelte";
+  import { validator } from "@felte/validator-vest";
 
   let triggerDialog = false;
+
+  onMount(() => {
+    window.onbeforeunload = event => {
+      if (event) suite.reset();
+      suite.reset();
+    }
+  });
+
+  const suite = editEmailSuite;
+  const { form } = createForm({
+    onSubmit: async (values) => {
+      await pb.collection("users").requestEmailChange(values.newEmail as string);
+      suite.reset();
+    },
+    onSuccess: () => {
+      triggerToast({
+        message: "Successfully sent verification email to your new email address!",
+        type: "success",
+        timeout: 8000,
+      });
+      suite.reset();
+    },
+    onError: (error) => {
+      console.error(error);
+      triggerToast({
+        message: "Something went wrong with verifying your email!",
+        type: "error",
+        timeout: 5000,
+      });
+      suite.reset();
+    },
+    extend: [validator({ suite }), reporter],
+  });
 </script>
 
 <h1>Settings</h1>
@@ -12,7 +51,7 @@
 <div class="form-control">
   <label class="label cursor-pointer">
     <span class="label-text">Code editing mode: {$enableCode ? "Enabled" : "Disabled"}</span>
-    <button class="btn swap" class:swap-active={$enableCode} on:click={() => (triggerDialog = true)}>
+    <button class="btn btn-square swap text-lg" class:swap-active={$enableCode} on:click={() => (triggerDialog = true)}>
       <div class="swap-on">&#10003;</div>
       <div class="swap-off">&nbsp;</div>
     </button>
@@ -31,36 +70,24 @@
 </Dialog>
 
 <h2>Change email</h2>
-<form id="changeEmail">
+<form use:form class="mb-10">
   <label class="form-control">
-    <span class="label-text">Email</span>
-    <input type="email" name="email" id="email" autocomplete="email" />
+    <div class="label">
+      <span class="label-text">Email</span>
+    </div>
+    <input type="email" name="newEmail" id="newEmail" autocomplete="email" />
   </label>
-  <label class="form-control">
-    <span class="label-text">Confirm email</span>
-    <input type="email" name="emailConfirm" id="emailConfirm" autocomplete="email" />
-  </label>
+  <ValidationMessage for="newEmail" let:messages={message}>
+    <span aria-live="polite" class="label-text-alt mt-2 place-self-end">{message || ""}</span>
+  </ValidationMessage>
   <button class="btn btn-primary">Verify email</button>
-</form>
-
-<h2>Change password</h2>
-<form id="changePassword">
-  <label class="form-control">
-    <span class="label-text">Password</span>
-    <input type="password" name="password" id="password" autocomplete="current-password" />
-  </label>
-  <label class="form-control">
-    <span class="label-text">Confirm password</span>
-    <input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" />
-  </label>
-  <button class="btn btn-primary">Confirm change</button>
 </form>
 {/if}
 
 <h2>Select Theme</h2>
 <div class="dropdown mb-72">
   <div tabindex="0" role="button" class="btn m-1">
-    Theme
+    Theme <ChevronDown />
   </div>
   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <ul tabindex="0" class="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52">

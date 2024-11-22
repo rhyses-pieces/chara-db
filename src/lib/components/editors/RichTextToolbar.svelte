@@ -25,23 +25,27 @@
   import Redo2 from "lucide-svelte/icons/redo-2";
   import RemoveFormatting from "lucide-svelte/icons/remove-formatting";
 
-  export let editor: Editor;
+  interface Props {
+    editor: Editor;
+  }
+
+  let { editor }: Props = $props();
 </script>
 
 <div role="toolbar" class="flex gap-2">
-  <button on:click={() => toggleBullet(editor)}><List aria-label="Set bulleted list" /></button>
-  <button on:click={() => toggleOrder(editor)}><ListOrdered aria-label="Set ordered list" /></button>
-  <button on:click={() => indentList(editor)}><IndentIncrease aria-label="Increase indent" /></button>
-  <button on:click={() => outdentList(editor)}><IndentDecrease aria-label="Decrease indent" /></button>
+  <button onclick={() => toggleBullet(editor)}><List aria-label="Set bulleted list" /></button>
+  <button onclick={() => toggleOrder(editor)}><ListOrdered aria-label="Set ordered list" /></button>
+  <button onclick={() => indentList(editor)}><IndentIncrease aria-label="Increase indent" /></button>
+  <button onclick={() => outdentList(editor)}><IndentDecrease aria-label="Decrease indent" /></button>
   <hr>
-  <button on:click={() => toggleBlockquote(editor)}><TextQuote aria-label="Set blockquote" /></button>
-  <button on:click={() => toggleCode(editor)}><Code aria-label="Set code snippet" /></button>
-  <button on:click={() => toggleCodeBlock(editor)}><SquareCode aria-label="Set codeblock" /></button>
-  <button on:click={() => setHr(editor)}><Minus aria-label="Set horizontal line" /></button>
+  <button onclick={() => toggleBlockquote(editor)}><TextQuote aria-label="Set blockquote" /></button>
+  <button onclick={() => toggleCode(editor)}><Code aria-label="Set code snippet" /></button>
+  <button onclick={() => toggleCodeBlock(editor)}><SquareCode aria-label="Set codeblock" /></button>
+  <button onclick={() => setHr(editor)}><Minus aria-label="Set horizontal line" /></button>
   <hr>
-  <button on:click={() => undo(editor)}><Undo2 aria-label="Undo" /></button>
-  <button on:click={() => redo(editor)}><Redo2 aria-label="Redo" /></button>
-  <button on:click={() => removeFormat(editor)}><RemoveFormatting aria-label="Remove formatting" /></button>
+  <button onclick={() => undo(editor)}><Undo2 aria-label="Undo" /></button>
+  <button onclick={() => redo(editor)}><Redo2 aria-label="Redo" /></button>
+  <button onclick={() => removeFormat(editor)}><RemoveFormatting aria-label="Remove formatting" /></button>
 </div>
 
 <style lang="postcss">

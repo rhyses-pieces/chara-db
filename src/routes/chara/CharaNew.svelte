@@ -6,11 +6,13 @@
   import { goto, preventChange, preventUnload, url } from "elegua";
   import { onDestroy, onMount } from "svelte";
 
-  let content = "";
-  let isDirty_ = false;
-  let triggerDialog = false;
+  let content = $state("");
+  let isDirty_ = $state(false);
+  let triggerDialog = $state(false);
 
-  $: isDirty_ = content !== "";
+  $effect(() => {
+    isDirty_ = content !== "";
+  });
 
   onMount(() => {
     // window.onbeforeunload = event => {
@@ -39,7 +41,7 @@
   </label>
 
   {#if $enableCode}
-    <CodeEditor label="editor-label" bind:value={content} />
+    <CodeEditor label="editor-label" bind:value={content} input={(init: string) => (content = init)} />
   {:else}
     <RichTextEditor label="editor-label" bind:value={content} />  
   {/if}
@@ -48,14 +50,18 @@
 </form>
 
 <Dialog bind:triggerDialog id="confirm-leave">
-  <h2 slot="title">Are you sure?</h2>
+  {#snippet title()}
+    <h2 >Are you sure?</h2>
+  {/snippet}
   <p>You may lose data if you navigate away without saving.</p>
-  <div slot="button">
-    <form method="dialog" class="modal-action">
-      <button class="btn btn-error" on:click={() => preventChange()}>Confirm</button>
-      <button class="btn bg-gray-500">Cancel</button>
-    </form>
-  </div>
+  {#snippet button()}
+    <div>
+      <form method="dialog" class="modal-action">
+        <button class="btn btn-error" onclick={() => preventChange()}>Confirm</button>
+        <button class="btn bg-gray-500">Cancel</button>
+      </form>
+    </div>
+  {/snippet}
 </Dialog>
 
 <style lang="postcss">

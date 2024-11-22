@@ -16,7 +16,7 @@
       <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="Toggle submenu">
         <Avatar width="small" />
       </div>
-      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
       <ul tabindex="0" class="dropdown-content bg-base-100">
         {#if $user !== null}
           <li><a href="/user">Profile</a></li>
@@ -25,7 +25,7 @@
         {/if}
           <li><a href="/settings">Settings</a></li>
         {#if $user !== null}
-          <li><button class="btn btn-error" on:click={logout}>Logout</button></li>
+          <li><button class="btn btn-error" onclick={logout}>Logout</button></li>
         {/if}
       </ul>
     </div>

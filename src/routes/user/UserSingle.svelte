@@ -1,8 +1,12 @@
 <script lang="ts">
   import { doesUserExist, pb } from "$lib/utils/pocketbase";
   import { params } from "elegua";
-  export let name = "";
+  interface Props {
+    name?: string;
+  }
 
+  let { name = "" }: Props = $props();
+  
   let response = doesUserExist($params["name"]);
 </script>
 

@@ -49,15 +49,19 @@
   <label class="form-control">
     <span class="label-text">Username</span>
     <input type="text" id="username" name="username" autocomplete="username" />
-    <ValidationMessage for="username" let:messages={message}>
-      <span aria-live="polite" class="label-text-alt mt-2 place-self-end">{message || ""}</span>
+    <ValidationMessage for="username" >
+      {#snippet children({ messages: message }: { messages: any })}
+        <span aria-live="polite" class="label-text-alt mt-2 place-self-end">{message || ""}</span>
+      {/snippet}
     </ValidationMessage>
   </label>
   <label class="form-control">
     <span class="label-text">Password</span>
     <input type="password" id="password" name="password" autocomplete="current-password" />
-    <ValidationMessage for="password" let:messages={message}>
-      <span aria-live="polite" class="label-text-alt mt-2 place-self-end">{message || ""}</span>
+    <ValidationMessage for="password" >
+      {#snippet children({ messages: message }: { messages: any })}
+        <span aria-live="polite" class="label-text-alt mt-2 place-self-end">{message || ""}</span>
+      {/snippet}
     </ValidationMessage>
   </label>
   <button type="submit" class="btn btn-primary place-self-end w-1/2">Login</button>

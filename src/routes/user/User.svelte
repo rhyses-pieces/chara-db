@@ -26,9 +26,11 @@
     }
   }
 
-  let files: FileList;
+  let files = $state() as FileList;
 
   const uploadAvatar = async (event: Event) => {
+    event.preventDefault();
+
     try {
       const formData = new FormData(event.currentTarget as HTMLFormElement);
       const file = formData.getAll("avatar")[0];
@@ -65,7 +67,7 @@
       <Avatar />
     </div>
     <h2>Update Avatar</h2>
-    <form on:submit|preventDefault={uploadAvatar}>
+    <form onsubmit={(uploadAvatar)}>
       <input type="file" bind:files name="avatar" id="avatar" class="input file-input focus:border-black" />
       <button class="btn btn-primary">Upload</button>
     </form>
@@ -77,7 +79,7 @@
     {:else}
       <p>{$user.email} is not visible</p>
     {/if}
-    <form on:submit|preventDefault={changeEmailVisiblity}>
+    <form onsubmit={(changeEmailVisiblity)}>
       <div class="form-control">
         <label class="label">
           <span class="label-text">Set email to visible?</span>
@@ -87,7 +89,7 @@
       <button class="btn btn-primary">Submit</button>
     </form>
     {#if !$user.verified}
-      <button class="btn btn-outline" on:click={requestVerify}>Verify me</button>
+      <button class="btn btn-outline" onclick={requestVerify}>Verify me</button>
     {/if}
   </section>
 {/if}

@@ -26,9 +26,9 @@
       logout();
     }
   });
-
-  $: document.documentElement.dataset.theme = $theme;
 </script>
+
+<svelte:document onload="{() => {document.documentElement.dataset.theme = $theme}}"></svelte:document>
 
 <Toasts />
 <Navbar />

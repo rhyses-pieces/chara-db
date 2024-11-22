@@ -9,7 +9,7 @@
       <Alert 
         type={toast.type}
         dismissable={toast.dismissable}
-        on:dismiss={() => dismissToast(toast.id)}
+        dismiss={() => dismissToast(toast.id)}
       >
         {toast.message}
       </Alert>

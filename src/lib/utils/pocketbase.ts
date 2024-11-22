@@ -2,7 +2,7 @@ import PocketBase, { type AuthModel } from "pocketbase";
 import { writable, type Writable } from "svelte/store";
 import { goto } from "elegua";
 
-export const pb = new PocketBase("https://chara.pockethost.io/");
+export const pb = new PocketBase(import.meta.env.BASE_URL);
 
 const loggedInUser = localStorage.getItem("user");
 export const user: Writable<AuthModel> = writable(JSON.parse(loggedInUser!) || null);

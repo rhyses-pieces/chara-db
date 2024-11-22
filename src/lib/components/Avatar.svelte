@@ -1,7 +1,11 @@
 <script lang="ts">
   import { user, pb } from "$lib/utils/pocketbase";
-  export let width = "big";
-  $: size = width === "small" ? "w-10" : "w-48";
+  interface Props {
+    width?: string;
+  }
+
+  let { width = "big" }: Props = $props();
+  let size = $derived(width === "small" ? "w-10" : "w-48");
 </script>
 
 <div class="avatar" class:placeholder={$user === null || $user.avatar === ""} role="presentation">

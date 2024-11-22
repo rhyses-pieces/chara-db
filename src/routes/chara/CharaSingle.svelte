@@ -1,6 +1,10 @@
 <script lang="ts">
   import { params } from "elegua";
-  export let id = "";
+  interface Props {
+    id?: string;
+  }
+
+  let { id = "" }: Props = $props();
 </script>
 
 <h1>Character {id}</h1>
